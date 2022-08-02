@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<h1 class="mt-4">Welcome to My Restaurant</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Homepage</li>
+</ol>
+<div class="card mb-4">
+    <div class="card-body">
+        <p class="mb-0">
+            Selamat datang di restaurant terlengkap di Indonesia
+            <h3>Hello, @User.Identity.Name!</h3>
+            <div class="m-auto">
+                <h2>View Component</h2>
+                @await Component.InvokeAsync("Hello")
+            </div>
+        </p>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿@*model IEnumerable<MyASPProject.Models.Restaurant>*@
+@*model MyASPProject.Models.Restaurant*@
+@model MyASPProject.ViewModels.RestaurantViewModel
+@{
+    // Supaya tidak menggunakan default _layout
+    // buat sendiri layoutnya
+    Layout = Layout = "_LayoutStartBootstrap";
+}
+
+
+<h1 class="mt-4">List Restaurants</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+    <li class="breadcrumb-item active">List Restaurant</li>
+</ol>
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="col-md-12">
+            <a asp-action="Create">Add New Restaurant</a>
+        </div>
+        <div class="container">
+            @if (ViewData["pesan"] != null)
+            {
+                <p> @Html.Raw(ViewData["pesan"])</p>
+            }
+            <div class="row">
+                <div class="col-sm">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+                                <td>Name</td>
+                                <td>Cuisine</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Restaurants)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Name</td>
+                                    @*<td><a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle" aria-hidden="true"></i>Details</a></td>*@
+                                    <partial name="_Summary" model="item" />
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <address>
+                            <strong>Support: </strong><email mail-to="info">Info</email>
+                            <strong>Marketing: </strong><email mail-to="marketing">Marketing</email>
+                        </address>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <p class="mb-0">
+            Username: @Model.Username
+        </p>
+    </div>
+</div>
+
