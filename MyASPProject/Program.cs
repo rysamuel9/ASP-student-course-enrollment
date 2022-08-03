@@ -23,6 +23,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<RestaurantDbContext>();
 
+builder.Services.ConfigureApplicationCookie(opt => opt.LoginPath = "/Account/Login");
+
 /*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<RestaurantDbContext>();*/
 

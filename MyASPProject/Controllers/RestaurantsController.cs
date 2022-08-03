@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyASPProject.Models;
 using MyASPProject.Services.IRepository;
 using MyASPProject.ViewModels;
 
 namespace MyASPProject.Controllers
 {
+    [Authorize]
     public class RestaurantsController : Controller
     {
         private readonly IRestaurantData _resto;
