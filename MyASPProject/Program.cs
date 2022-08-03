@@ -26,6 +26,7 @@ builder.Services.ConfigureApplicationCookie(opt => opt.LoginPath = "/Account/Log
 builder.Services.AddDbContext<RestaurantDbContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// builder.Services.AddScoped<IPengguna, PenggunaServices>();
 builder.Services.AddScoped<IRestaurantData, SqlRestaurantData>();
 
 var app = builder.Build();
