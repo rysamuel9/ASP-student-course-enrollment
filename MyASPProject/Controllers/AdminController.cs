@@ -143,7 +143,6 @@ namespace MyASPProject.Controllers
             return View(model);
         }
 
-        [HttpDelete]
         public async Task<IActionResult> DeleteInRole(string id, string role)
         {
             var user = await _userManager.FindByNameAsync(id);

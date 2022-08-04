@@ -6,7 +6,6 @@ using MyASPProject.ViewModels;
 
 namespace MyASPProject.Controllers
 {
-    [Authorize]
     public class RestaurantsController : Controller
     {
         private readonly IRestaurantData _resto;
@@ -15,6 +14,7 @@ namespace MyASPProject.Controllers
             _resto = resto;
         }
 
+        [Authorize(Roles = "user regular, admin")]
         public IActionResult Index()
         {
             /*
@@ -46,6 +46,7 @@ namespace MyASPProject.Controllers
             return View(models);
         }
 
+        [Authorize(Roles = "user regular, admin")]
         public IActionResult Details(int id)
         {
             var model = _resto.GetById(id);
@@ -60,12 +61,14 @@ namespace MyASPProject.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "admin")]
         // GET VIEW CREATE
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "admin")]
         // POST CREATE RESTO
         [HttpPost]
         public IActionResult Create(RestaurantEditViewModel model)
