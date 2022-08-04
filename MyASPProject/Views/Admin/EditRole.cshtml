@@ -19,7 +19,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="mb-3 mt-3">
                     <label asp-for="Id" class="form-label"></label>
-                    <input asp-for="Id" class="form-control" readonly/>
+                    <input asp-for="Id" class="form-control" readonly />
                     <span asp-validation-for="Id" class="text-danger"></span>
                 </div>
                 <div class="mb-3 mt-3">
@@ -33,25 +33,29 @@
             </form>
 
             <br />
-            <a class="btn btn-primary mb-3" style="width:auto">Add User to Role</a>
+            <a class="btn btn-primary mb-3" style="width:auto" asp-controller="Admin" asp-action="AddUserToRole">Add User to Role</a>
 
-            @* @if (Model.Users.Any())
+            @if (Model.Users.Any())
             {
-            <table class="table table-striped">
-            <tr>
-            <th>Username</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
-            </tr>
-            @foreach (var user in Model.Users)
-            {
-            <tr>
-            <td>@user</td>
-            <td>delete</td>
-            </tr>
+                <table class="table ttable-striped">
+                    <tr>
+                        <th>Username</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@user</td>
+                            <td>
+                                <a class="btn btn-danger btn-sm" asp-action="DeleteInRole" asp-route-id="@user" asp-route-role="@Model.RoleName">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </table>
             }
-            </table>
-            }*@
         </div>
     </div>
 </div>

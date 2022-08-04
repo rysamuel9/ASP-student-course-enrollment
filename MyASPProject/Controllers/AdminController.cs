@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyASPProject.Models;
 using MyASPProject.ViewModels;
 
@@ -66,7 +67,7 @@ namespace MyASPProject.Controllers
             var role = await _roleManager.FindByIdAsync(id);
             if (role == null)
             {
-                ViewData["pesan"] = $"<div class='alert alert-warning alert-dismissible fade show' role='alert'>Role dengan id {role.Id} tidak ditemukan <button type='button' class='btn - close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+                ViewData["pesan"] = $"<div class='alert alert-danger alert-dismissible fade show'><button type='button' class='btn-close' data-bs-dismiss='alert'></button> Role tidak ditemukan</div>";
                 return View();
             }
 
@@ -76,13 +77,19 @@ namespace MyASPProject.Controllers
                 RoleName = role.Name
             };
 
-            //foreach (var user in _userManager.Users)
-            //{
-            //    if (await _userManager.IsInRoleAsync(user, user.FullName))
-            //    {
-            //        model.Users.Add(user.FullName);
-            //    }
-            //}
+            if (_userManager.Users.Any())
+            {
+                var users = await _userManager.Users.ToListAsync();
+                model.Users = new List<string>();
+                foreach (var user in users)
+                {
+                    //model.Users.Add(user.UserName);
+                    if (await _userManager.IsInRoleAsync(user, role.Name))
+                    {
+                        model.Users.Add(user.UserName);
+                    }
+                }
+            }
 
             return View(model);
         }
@@ -135,5 +142,16 @@ namespace MyASPProject.Controllers
 
             return View(model);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteInRole(string id, string role)
+        {
+            var user = await _userManager.FindByNameAsync(id);
+            await _userManager.RemoveFromRoleAsync(user, role);
+            var myRole = await _roleManager.FindByNameAsync(role);
+
+            return RedirectToAction("EditRole", new { id = myRole.Id });
+        }
+
     }
 }
