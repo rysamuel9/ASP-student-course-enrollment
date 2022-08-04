@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyASPProject.Data;
@@ -9,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.Configure<RouteOptions>(options => options.LowercaseQueryStrings = true);
 //menambahkan pengaturan Identity
 builder.Services.AddIdentity<CustomIdentityUser, IdentityRole>(options =>
 {
@@ -26,8 +27,15 @@ builder.Services.ConfigureApplicationCookie(opt => opt.LoginPath = "/Account/Log
 builder.Services.AddDbContext<RestaurantDbContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Menambahkan Claims
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+});
+
 // builder.Services.AddScoped<IPengguna, PenggunaServices>();
 builder.Services.AddScoped<IRestaurantData, SqlRestaurantData>();
+builder.Services.AddScoped<ISamurai, SamuraiServices>();
 
 var app = builder.Build();
 
@@ -41,6 +49,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+//app.UseMiddleware<JwtMiddleware>();
 
 app.UseRouting();
 app.UseAuthentication();

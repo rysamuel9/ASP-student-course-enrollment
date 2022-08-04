@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyASPProject.Models;
@@ -6,6 +7,7 @@ using MyASPProject.ViewModels;
 
 namespace MyASPProject.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -143,11 +145,14 @@ namespace MyASPProject.Controllers
             return View(model);
         }
 
+        [Authorize(Policy = "DeleteRolePolicy")]
         public async Task<IActionResult> DeleteInRole(string id, string role)
         {
             var user = await _userManager.FindByNameAsync(id);
             await _userManager.RemoveFromRoleAsync(user, role);
             var myRole = await _roleManager.FindByNameAsync(role);
+
+            //await _userManager.AddClaimAsync(user, new System.Security.Claims { })
 
             return RedirectToAction("EditRole", new { id = myRole.Id });
         }
