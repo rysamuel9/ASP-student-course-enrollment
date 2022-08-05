@@ -38,6 +38,7 @@ namespace MyASPProject.Controllers
 
         public IActionResult Create()
         {
+            ViewData["pesan"] = TempData["pesan"] ?? TempData["pesan"];
             return View();
         }
 
@@ -53,6 +54,51 @@ namespace MyASPProject.Controllers
             catch (Exception ex)
             {
                 TempData["pesan"] = $"<div class='alert alert-danger alert-dismissible fade show' role='alert'>Gagal menambahkan data, Error: {ex.Message} <button type='button' class='btn - close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+                return View();
+            }
+        }
+
+        public async Task<IActionResult> Update(int id)
+        {
+            var model = await _samurai.GetById(id);
+            ViewData["pesan"] = TempData["pesan"] ?? TempData["pesan"];
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(Samurai samurai)
+        {
+            try
+            {
+                var model = await _samurai.Update(samurai);
+                TempData["pesan"] = $"<div class='alert alert-success alert-dismissible fade show' role='alert'>Berhasil menambahkan data samurai {model.Name} <button type='button' class='btn - close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["pesan"] = $"<div class='alert alert-danger alert-dismissible fade show' role='alert'>Gagal menambahkan data, Error: {ex.Message} <button type='button' class='btn - close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+                return View();
+            }
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var model = await _samurai.GetById(id);
+            return View(model);
+        }
+
+        [ActionName("Delete")]
+        [HttpPost]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            try
+            {
+                await _samurai.Delete(id);
+                TempData["pesan"] = $"<div class='alert alert-success alert-dismissible fade show' role='alert'>Berhasil mendelete data<button type='button' class='btn - close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
                 return View();
             }
         }

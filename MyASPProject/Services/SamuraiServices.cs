@@ -7,6 +7,20 @@ namespace MyASPProject.Services
 {
     public class SamuraiServices : ISamurai
     {
+        public async Task Delete(int id)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.DeleteAsync($"https://localhost:7276/api/Samurais/{id}"))
+                {
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    {
+                        throw new Exception($"Gagal untuk delete data");
+                    }
+                }
+            }
+        }
+
         public async Task<IEnumerable<Samurai>> GetAll()
         {
             List<Samurai> samurais = new List<Samurai>();
@@ -39,6 +53,11 @@ namespace MyASPProject.Services
             return samurai;
         }
 
+        public Task<IEnumerable<Samurai>> GetWithQuotes()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Samurai> Insert(Samurai obj)
         {
             Samurai samurai = new();
@@ -58,6 +77,26 @@ namespace MyASPProject.Services
                     }
                 }
             }
+            return samurai;
+        }
+
+        public async Task<Samurai> Update(Samurai obj)
+        {
+            Samurai samurai = await GetById(obj.Id);
+            if (samurai == null)
+                throw new Exception($"Data Samurai dengan ID {obj.Id} tidak ditemukan!");
+            StringContent content = new StringContent(JsonConvert.SerializeObject(obj),
+                Encoding.UTF8, "application/json");
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.PutAsync("https://localhost:7276/api/Samurais", content))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    samurai = JsonConvert.DeserializeObject<Samurai>(apiResponse);
+                }
+            }
+
             return samurai;
         }
     }
