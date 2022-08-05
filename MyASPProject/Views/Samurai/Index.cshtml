@@ -23,6 +23,13 @@
                 <a asp-action="Create">Create New Samurai</a>
             </p>
 
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="get" asp-action="Index">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." name="Name" aria-describedby="btnNavbarSearch" />
+                    <input type="submit" value="Search" class="btn btn-primary" id="btnNavbarSearch" />
+                </div>
+            </form>
+
             <table class="table">
                 <thead>
                     <tr>
@@ -47,15 +54,15 @@
                             </td>
                             <td>
                                 <a class="btn btn-warning btn-sm" asp-action="Update" asp-route-id="@item.Id">
-                                    <i class="fa-solid fa-info"></i>
+                                    <i class="fa-solid fa-pen-to-square"></i>
                                     Update
                                 </a>&nbsp;
                                 <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id">
-                                    <i class="fa-solid fa-info"></i>
+                                    <i class="fa-solid fa-circle-info"></i>
                                     Detail
                                 </a>&nbsp;
                                 <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">
-                                    <i class="fa-solid fa-info"></i>
+                                    <i class="fa-solid fa-trash"></i>
                                     Delete
                                 </a>&nbsp;
                             </td>

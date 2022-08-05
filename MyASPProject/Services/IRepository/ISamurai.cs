@@ -11,6 +11,8 @@ namespace MyASPProject.Services.IRepository
         Task Delete(int id);
 
         // Tugas
-        Task<IEnumerable<Samurai>> GetWithQuotes();
+        Task<IEnumerable<SamuraiWithQuotes>> GetSamuraiWithQuotes();
+
+        Task<IEnumerable<Samurai>> GetByName(string name);
     }
 }

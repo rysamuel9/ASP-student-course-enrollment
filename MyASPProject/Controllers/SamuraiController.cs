@@ -14,11 +14,11 @@ namespace MyASPProject.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name)
         {
+
             // Ambil data samurai
 
-            var model = await _samurai.GetAll();
             //string strResult = string.Empty;
 
             //foreach (var result in results)
@@ -27,6 +27,27 @@ namespace MyASPProject.Controllers
             //}
 
             //return Content(strResult);
+            //var model = await _samurai.GetAll();
+            ViewData["pesan"] = TempData["pesan"] ?? TempData["pesan"];
+
+            IEnumerable<Samurai> model;
+
+            if (name == null)
+            {
+                model = await _samurai.GetAll();
+            }
+            else
+            {
+                model = await _samurai.GetByName(name);
+            }
+
+            return View(model);
+        }
+
+        // Tugas
+        public async Task<IActionResult> WithQuote()
+        {
+            var model = await _samurai.GetSamuraiWithQuotes();
             return View(model);
         }
 
@@ -102,5 +123,8 @@ namespace MyASPProject.Controllers
                 return View();
             }
         }
+
+
+
     }
 }
